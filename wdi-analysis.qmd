@@ -1,0 +1,169 @@
+---
+title: "World Development Indicators Data Analysis"
+author: "Kimberly Cardinale"
+date: "2025-06-04"
+format:
+  html: default
+  pdf: default
+editor: visual
+bibliography: references.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/chicago-note-bibliography.csl
+---
+
+```{python}
+import pandas as pd
+
+# Load dataset
+wdi = pd.read_csv("wdi.csv")
+
+# Display first few rows
+wdi.head()
+```
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. inflation_rate
+wdi["inflation_rate"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["inflation_rate"], kde=True)
+plt.title("Distribution of Inflation  Rate")
+plt.xlabel("Inflation Rate (percentage)")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["inflation_rate"].mean()
+```
+
+The inflation rate for the majority of countries falls within the 0–15% range, with an average inflation rate of 12.49%. The distribution is right-skewed, with a long tail of countries experiencing significantly higher inflation rates (e.g., 50% or more).
+
+```{python}
+# 2. adult_literacy_rate
+wdi["adult_literacy_rate"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["adult_literacy_rate"], bins=20, kde=True)
+plt.title("Adult Literacy Rate")
+plt.xlabel("Adult Literacy Rate (%)")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["adult_literacy_rate"].mean()
+```
+
+While many countries have high adult literacy, with an average rate of 79.57%, several still fall below 70%.
+
+```{python}
+# 3. measles_immunisation_rate
+wdi["measles_immunisation_rate"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["measles_immunisation_rate"], bins=20)
+plt.title("Measles Immunization Rate")
+plt.xlabel("Measles Immunization Rate (%)")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["measles_immunisation_rate"].mean()
+```
+
+Most countries have high measles immunization coverage, with an average rate of 93%.
+
+```{python}
+# 4. life_expectancy
+wdi["life_expectancy"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["life_expectancy"], kde=True)
+plt.title("Distribution of Life Expectancy")
+plt.xlabel("Years")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["life_expectancy"].mean()
+```
+
+Life expectancy generally ranges from 60–85 years, with most countries clustering in the 70s. The average life extectancy is 72.4 years.
+
+```{python}
+# 5. total_population
+wdi["total_population"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["total_population"], bins=50, log_scale=(True, False))
+plt.title("Distribution of Total Population")
+plt.xlabel("Population")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["total_population"].mean()
+```
+
+The average population size across countries is approximately 36.54 million people.
+
+```{python echo: false}
+#| fig-cap: "Top 10 adult literacy rates among countries in 2022."
+#| label: fig-top10-literacy
+
+# Identify top 10 countries by Adult Literacy Rate
+top10_lit = wdi.nlargest(10, "adult_literacy_rate")[["country", "adult_literacy_rate"]]
+
+plt.figure(figsize=(10,6))
+ax = sns.barplot(x="adult_literacy_rate", y="country", data=top10_lit, palette="pastel")
+
+# Add labels to bars
+for i, v in enumerate(top10_lit["adult_literacy_rate"]):
+    ax.text(v + 0.5, i, f"{v:.2f}%", color='black', va='center')
+
+plt.title("Top 10 Adult Literacy Rates Among Countries in 2022")
+plt.xlabel("Adult Literacy Rate (%)")
+plt.ylabel("Country")
+plt.tight_layout()
+plt.show()
+```
+
+Data source: World Development Indicators (WDI) 2022.
+
+```{python echo: false}
+#| fig-cap: "Relationship between measles immunization rate and life expectancy across countries in 2022."
+#| label: fig-measles-vs-life
+
+plt.figure(figsize=(8,5))
+sns.scatterplot(data=wdi, x="measles_immunisation_rate", y="life_expectancy", alpha=0.7)
+
+plt.title("Measles Immunization Rate vs. Life Expectancy (2022)")
+plt.xlabel("Measles Immunization Rate (%)")
+plt.ylabel("Life Expectancy (years)")
+plt.tight_layout()
+plt.show()
+```
+
+Data source: World Development Indicators (WDI) 2022.
+
+```{python}
+#| tbl-cap: "Summary statistics of selected indicators in 2022."
+#| label: tbl-summary-stats
+
+# Indicators for summary
+indicators = ["inflation_rate", "adult_literacy_rate", "measles_immunisation_rate", "life_expectancy", "total_population"]
+
+# Calculate summary statistics
+summary_stats = wdi[indicators].agg(["mean", "median", "min", "max"]).T
+
+# Rename index
+summary_stats.index = ["Inflation Rate (%)", "Adult Literacy Rate (%)", "Measles Immunization Rate (%)", "Life Expectancy (years)", "Total Population"]
+
+summary_stats = summary_stats.round(2)
+
+summary_stats
+```
+
+Data source: World Development Indicators (WDI) 2022.
+
+As shown in @fig-top10-literacy, the top 10 countries had adult literacy rates above 97% in 2022 (Reference: [-@swargiaryliteracy]).  
+As shown in @fig-measles-vs-life, higher measles immunization rates generally correspond with longer life expectancy (Reference: [-@bloch1985health]).  
+@tbl-summary-stats summarizes key statistics for the main indicators analysed in this report, including inflation rate, adult literacy rate, measles immunization rate, life expectancy, and total population size.
+
+# References

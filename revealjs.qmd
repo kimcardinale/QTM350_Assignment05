@@ -1,0 +1,149 @@
+---
+title: "World Development Indicators Analysis"
+author: "Kimberly Cardinale"
+date: "2025-06-04"
+format: 
+  revealjs:
+    theme: white
+    transition: fade
+---
+
+# "World Development Indicators Analysis
+## Year 2022  
+*Kimberly Cardinale*  
+*Date: 2025-06-04*
+
+---
+
+# Introduction
+
+- Overview of dataset  
+- Focus on 14 variables for year 2022  
+- Goals: data analysis and visualization
+
+---
+
+# Exploratory Data Analysis
+
+- Inflation Rate distribution  
+- Adult Literacy Rate trends  
+- Measles Immunization coverage  
+- Life Expectancy trends
+- Total Population Size
+
+---
+
+# Distribution of Inflation Rates Across Countries
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. inflation_rate
+wdi["inflation_rate"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["inflation_rate"], kde=True)
+plt.title("Distribution of Inflation  Rate")
+plt.xlabel("Inflation Rate (percentage)")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["inflation_rate"].mean()
+```
+
+---
+
+# Adult Literacy Rate Distribution
+
+```{python}
+# 2. adult_literacy_rate
+wdi["adult_literacy_rate"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["adult_literacy_rate"], bins=20, kde=True)
+plt.title("Adult Literacy Rate")
+plt.xlabel("Adult Literacy Rate (%)")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["adult_literacy_rate"].mean()
+```
+
+---
+
+# Global Measles Immunization Coverage
+
+```{python}
+# 3. measles_immunisation_rate
+wdi["measles_immunisation_rate"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["measles_immunisation_rate"], bins=20)
+plt.title("Measles Immunization Rate")
+plt.xlabel("Measles Immunization Rate (%)")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["measles_immunisation_rate"].mean()
+```
+
+---
+
+# Life Expectancy Distribution
+
+```{python}
+# 4. life_expectancy
+wdi["life_expectancy"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["life_expectancy"], kde=True)
+plt.title("Distribution of Life Expectancy")
+plt.xlabel("Years")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["life_expectancy"].mean()
+```
+
+---
+
+# Distribution of Total Population Across Countries
+
+```{python}
+# 5. total_population
+wdi["total_population"].describe()
+
+plt.figure(figsize=(8, 4))
+sns.histplot(wdi["total_population"], bins=50, log_scale=(True, False))
+plt.title("Distribution of Total Population")
+plt.xlabel("Population")
+plt.ylabel("Number of Countries")
+plt.show()
+
+wdi["total_population"].mean()
+```
+
+---
+
+# Key Findings
+
+- Majority of countries have inflation rates between 0–15%
+- Most countries exhibit high adult literacy rates, with some exceptions
+- Strong measles immunization coverage is assocciated with higher life expectancy
+- Average life expectancy across countries is in the 70s
+- Average population size is ~ 36.54 million; median population sizie is ~ 6.47 million
+
+---
+
+# Conclusion
+
+- Key insights into global development indicators
+- Highlights the critical role of healthcare and education
+- Informs quantitative-based policy decisions through data analysis
+
+---
+
+# Thank You!
+
+Questions?
