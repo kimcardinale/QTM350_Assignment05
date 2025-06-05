@@ -8,18 +8,10 @@ format:
     transition: fade
 ---
 
-# "World Development Indicators Analysis
-## Year 2022  
-*Kimberly Cardinale*  
-*Date: 2025-06-04*
-
----
-
 # Introduction
 
 - Overview of dataset  
 - Focus on 14 variables for year 2022  
-- Goals: data analysis and visualization
 
 ---
 
@@ -32,6 +24,12 @@ format:
 - Total Population Size
 
 ---
+```{python echo: false}
+import pandas as pd
+
+# Load dataset
+wdi = pd.read_csv("wdi.csv")
+```
 
 # Distribution of Inflation Rates Across Countries
 
